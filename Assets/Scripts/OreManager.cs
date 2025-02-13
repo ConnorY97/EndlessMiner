@@ -5,6 +5,45 @@ using UnityEngine;
 
 public class OreManager : MonoBehaviour
 {
+    #region Singleton Creation
+    // Singleton instance
+    private static OreManager instance;
+
+    public static OreManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                // Look for an existing instance in the scene
+                instance = FindObjectOfType<OreManager>();
+
+                if (instance == null)
+                {
+                    // Create a new GameObject with OreManager if none exists
+                    GameObject singletonObject = new GameObject("OreManager");
+                    instance = singletonObject.AddComponent<OreManager>();
+                }
+            }
+            return instance;
+        }
+    }
+
+    // Prevent direct instantiation
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Debug.LogWarning($"Multiple instances of {nameof(OreManager)} found. Destroying the duplicate.");
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = this;
+        DontDestroyOnLoad(gameObject); // Optional: Makes the instance persist across scenes
+    }
+    #endregion
+
     public GameObject orePrefab = null;
     public int oreRows = 10;
     public int oreCols = 10;
@@ -12,6 +51,9 @@ public class OreManager : MonoBehaviour
     public float oreSpacing = 1.25f;
 
     public float currentFloor = 1;
+
+    private List<Ore> remainingOre = new List<Ore>();
+    public List<Ore> RemainingOre { get { return remainingOre; } }
     // Start is called before the first frame update
     void Start()
     {
@@ -66,7 +108,8 @@ public class OreManager : MonoBehaviour
             {
                 GameObject currentOre = Instantiate(prefab, gridPositions[i, j], Quaternion.identity);
                 Ore oreRef = currentOre.GetComponent<Ore>();
-                oreRef.Init(currentFloor);
+                oreRef.Init(currentFloor, oreSize);
+                remainingOre.Add(oreRef);
             }
         }
     }
