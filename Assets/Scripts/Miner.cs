@@ -1,26 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class Miner : MonoBehaviour
 {
-    public float speed = 5f;
-    public float maxSpeed = 7f;
+    public float speed = 5f; // Speed at which the miner moves
     private Ore target = null;
-    private Rigidbody2D rb = null;
-    // Start is called before the first frame update
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        if (rb == null)
-        {
-            Debug.LogError($"Failed to find RB2D on {gameObject.name}.");
-        }
-    }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         // If there's no target, find the closest one
         if (target == null)
@@ -33,42 +21,56 @@ public class Miner : MonoBehaviour
             }
             else
             {
-                Debug.Log($"{gameObject.name} found new target");
+                Debug.Log($"{gameObject.name} found a new target.");
             }
         }
         else
         {
-            // Move towards the target using forces
             MoveTowardsTarget();
-            rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxSpeed);
         }
     }
 
     private void MoveTowardsTarget()
     {
-        if (target == null || rb == null) return;
+        if (target == null) return;
 
-        // Calculate the direction to the target
-        Vector2 direction = (target.gameObject.transform.position - transform.position).normalized;
+        // Get the position of the target's mine position
+        Vector3 targetPosition = target.MinePos.transform.position;
 
-        // Apply force towards the target
-        rb.AddForce(direction * speed);
+        // Move towards the target using Vector2.MoveTowards
+        transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+
+        // Check if the miner has reached the target position
+        if (Vector2.Distance(transform.position, targetPosition) < 0.01f)
+        {
+            Debug.Log($"{gameObject.name} reached the target position.");
+            HandleMining(); // Call mining or other logic here
+        }
     }
 
     private Ore FindClosestOre()
     {
         List<Ore> ores = OreManager.Instance.RemainingOre;
         Ore newTarget = null;
-        float closestOre = float.MaxValue;
+        float closestDistance = float.MaxValue;
+
         foreach (Ore ore in ores)
         {
-            float currentDistance = Vector2.Distance(transform.position, ore.transform.position);
-            if (currentDistance < closestOre)
+            float currentDistance = Vector2.Distance(transform.position, ore.MinePos.transform.position);
+            if (currentDistance < closestDistance)
             {
-                closestOre = currentDistance;
+                closestDistance = currentDistance;
                 newTarget = ore;
             }
         }
+
         return newTarget;
+    }
+
+    private void HandleMining()
+    {
+        // Logic for mining or interacting with the ore
+        Debug.Log($"{gameObject.name} is now mining {target.gameObject.name}.");
+        // Remove the target from the RemainingOre list, destroy it, or handle mining here
     }
 }

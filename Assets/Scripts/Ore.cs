@@ -6,6 +6,10 @@ public class Ore : MonoBehaviour
     private float health = 100;
     public float Health { get { return health; } }
 
+    [SerializeField]
+    private GameObject minePos = null;
+    public GameObject MinePos { get { return minePos; } }
+
     public void Init(float healtMultiplyer, float oreScaling)
     {
         health *= healtMultiplyer;
