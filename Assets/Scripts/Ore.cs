@@ -10,9 +10,35 @@ public class Ore : MonoBehaviour
     private GameObject minePos = null;
     public GameObject MinePos { get { return minePos; } }
 
-    public void Init(float healtMultiplyer, float oreScaling)
+    private bool targeted = false;
+    public bool Targeted { get { return targeted; } set { } }
+
+    private float value = 10.0f;
+    public float Value { get { return value; } }
+
+    public void Init(float healtMultiplyer, float oreScaling, float valueMultiplayer)
     {
         health *= healtMultiplyer;
         gameObject.transform.localScale = new Vector3(oreScaling, oreScaling, oreScaling);
+        value *= valueMultiplayer;
+    }
+
+    public bool Mined(float damage)
+    {
+        health -= damage;
+
+        if (health < 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void DestoryOre()
+    {
+        Destroy(gameObject);
     }
 }

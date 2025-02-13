@@ -67,12 +67,6 @@ public class OreManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private Vector3[,] GenerateGridPositions()
     {
         // Create a 2D array to hold the positions
@@ -107,8 +101,9 @@ public class OreManager : MonoBehaviour
             for (int j = 0; j < oreRows; j++)
             {
                 GameObject currentOre = Instantiate(prefab, gridPositions[i, j], Quaternion.identity);
+                currentOre.name = $"Ore {i}x{j}";
                 Ore oreRef = currentOre.GetComponent<Ore>();
-                oreRef.Init(currentFloor, oreSize);
+                oreRef.Init(currentFloor, oreSize, currentFloor);
                 remainingOre.Add(oreRef);
             }
         }
