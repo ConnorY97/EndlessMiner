@@ -16,6 +16,9 @@ public class Ore : MonoBehaviour
     private float value = 10.0f;
     public float Value { get { return value; } }
 
+    private Ore[] neighbours = null;
+    public Ore[] Neighbours { get { return neighbours; } set { neighbours = value; } }
+
     public void Init(float healtMultiplyer, float oreScaling, float valueMultiplayer)
     {
         health *= healtMultiplyer;

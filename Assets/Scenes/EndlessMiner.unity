@@ -273,15 +273,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreCols
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreRows
-      value: 7
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreSize
-      value: 0.52
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: orePrefab
@@ -289,11 +289,11 @@ PrefabInstance:
       objectReference: {fileID: 5787143029429335955, guid: 482c4e2a2db61334fb7086da5060d05c, type: 3}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreSpacing
-      value: 0.56
+      value: 0.49
       objectReference: {fileID: 0}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreTextures.Array.size
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreTextures.Array.data[0].sprite
@@ -308,6 +308,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300030, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
+      propertyPath: oreTextures.Array.data[3].sprite
+      value: 
+      objectReference: {fileID: -6045269988124551188, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
+    - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
+      propertyPath: oreTextures.Array.data[4].sprite
+      value: 
+      objectReference: {fileID: -8333202958171376367, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
+    - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
+      propertyPath: oreTextures.Array.data[5].sprite
+      value: 
+      objectReference: {fileID: -1729818555723472959, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
+    - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreTextures.Array.data[0].oreName
       value: TopLeft
       objectReference: {fileID: 0}
@@ -318,6 +330,18 @@ PrefabInstance:
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreTextures.Array.data[2].oreName
       value: TopRight
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
+      propertyPath: oreTextures.Array.data[3].oreName
+      value: MiddleLeft
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
+      propertyPath: oreTextures.Array.data[4].oreName
+      value: MiddleMiddle
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
+      propertyPath: oreTextures.Array.data[5].oreName
+      value: MiddleRight
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

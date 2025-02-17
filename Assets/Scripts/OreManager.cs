@@ -70,11 +70,11 @@ public class OreManager : MonoBehaviour
     private Vector3[,] GenerateGridPositions()
     {
         // Create a 2D array to hold the positions
-        Vector3[,] gridPositions = new Vector3[oreRows, oreCols];
+        Vector3[,] gridPositions = new Vector3[oreCols, oreRows];
 
-        for (int i = 0; i < oreRows; i++)
+        for (int i = 0; i < oreCols; i++)
         {
-            for (int j = 0; j < oreCols; j++)
+            for (int j = 0; j < oreRows; j++)
             {
                 // Calculate the position for each cube
                 Vector3 position = new Vector3(
@@ -95,6 +95,8 @@ public class OreManager : MonoBehaviour
         // Get the grid positions
         Vector3[,] gridPositions = GenerateGridPositions();
 
+        Ore[,] oreGrid = new Ore[oreCols, oreRows];
+
         // Instantiate cubes at each position
         for (int i = 0; i < oreCols; i++)
         {
@@ -105,19 +107,33 @@ public class OreManager : MonoBehaviour
                 Ore oreRef = currentOre.GetComponent<Ore>();
                 oreRef.Init(currentFloor, oreSize, currentFloor);
                 remainingOre.Add(oreRef);
+
+                oreGrid[i,j] = oreRef;
             }
         }
+
+        // Assign neighbors
+        //for (int i = 0; i < oreRows; i++)
+        //{
+        //    for (int j = 0; j < oreCols; j++)
+        //    {
+        //        Ore currentOre = oreGrid[i, j];
+        //        currentOre.Neighbours = GetNeighbors(oreGrid, i, j);
+        //    }
+        //}
     }
+
 
     private void OnDrawGizmos()
     {
+        if (oreCols < 0 || oreRows < 0) return;
         // Get the grid positions
         Vector3[,] gridPositions = GenerateGridPositions();
 
         // Draw the cubes using Gizmos
-        for (int i = 0; i < oreRows; i++)
+        for (int i = 0; i < oreCols; i++)
         {
-            for (int j = 0; j < oreCols; j++)
+            for (int j = 0; j < oreRows; j++)
             {
                 Gizmos.color = Color.grey;
                 Gizmos.DrawCube(gridPositions[i, j], Vector3.one * oreSize);
