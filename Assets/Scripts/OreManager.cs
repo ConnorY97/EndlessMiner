@@ -165,23 +165,35 @@ public class OreManager : MonoBehaviour
 
     public string DeterminOrePosition(Ore ore)
     {
-        bool right = ore.Neighbours[0] == null;
-        bool bottom = ore.Neighbours[1] == null;
-        bool left = ore.Neighbours[2] == null;
-        bool top = ore.Neighbours[3] == null;
+        var positionMap = new Dictionary<string, string>
+        {
+            { "0111", "TopLeft" }, // Top row with nothing below it
+            { "0101", "TopMiddle" },
+            { "1101", "TopRight" },
+            { "0011", "TopLeft" }, // Top row with something below it
+            { "0001", "TopMiddle" },
+            { "1001", "TopRight" },
+            { "0010", "MiddleLeft" },
+            { "0000", "MiddleMiddle" },
+            { "1000", "MiddleRight" },
+            { "0110", "BottomLeft" },
+            { "0100", "BottomMiddle" },
+            { "1100", "BottomRight" },
+            { "1011", "TopMiddle" } // Alone in a row with nothing below
+        };
 
-        if (left && top && !right) return "TopLeft";
-        if (!left && top && !right) return "TopMiddle";
-        if (!left && top && right) return "TopRight";
-        if (left && top && !bottom && right) return "TopMiddle";
-        if (left && !top && !bottom && !right) return "MiddleLeft";
-        if (!left && !top && !bottom && right) return "MiddleRight";
-        if (left && bottom && !right) return "BottomLeft";
-        if (!left && bottom && !right) return "BottomMiddle";
-        if (!left && bottom && right) return "BottomRight";
 
-        return "MiddleMiddle";
+        // Generate a key based on neighbour conditions
+        string key = $"{BoolToBit(ore.Neighbours[0] == null)}" + // Right
+                     $"{BoolToBit(ore.Neighbours[1] == null)}" + // Bottom
+                     $"{BoolToBit(ore.Neighbours[2] == null)}" + // Left
+                     $"{BoolToBit(ore.Neighbours[3] == null)}";  // Top
+
+        return positionMap.TryGetValue(key, out string position) ? position : "MiddleMiddle";
     }
+
+    // Helper method to convert bool to bit (0 or 1)
+    private int BoolToBit(bool value) => value ? 1 : 0;
 
     public Sprite GetTexture(string name)
     {
