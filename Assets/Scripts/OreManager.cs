@@ -1,7 +1,13 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+
+[Serializable]
+public class OreSprite
+{
+    public string oreName; // Name of the ore
+    public Sprite sprite;  // Corresponding sprite
+}
 
 public class OreManager : MonoBehaviour
 {
@@ -41,6 +47,16 @@ public class OreManager : MonoBehaviour
 
         instance = this;
         DontDestroyOnLoad(gameObject); // Optional: Makes the instance persist across scenes
+
+        // Convert List to Dictionary for fast lookups
+        oreTextureDict = new Dictionary<string, Sprite>();
+        foreach (var oreSprite in oreSprites)
+        {
+            if (!oreTextureDict.ContainsKey(oreSprite.oreName))
+            {
+                oreTextureDict.Add(oreSprite.oreName, oreSprite.sprite);
+            }
+        }
     }
     #endregion
 
@@ -54,6 +70,11 @@ public class OreManager : MonoBehaviour
 
     private List<Ore> remainingOre = new List<Ore>();
     public List<Ore> RemainingOre { get { return remainingOre; } }
+
+    public List<OreSprite> oreSprites;
+
+    private Dictionary<string, Sprite> oreTextureDict;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -112,17 +133,55 @@ public class OreManager : MonoBehaviour
             }
         }
 
-        // Assign neighbors
-        //for (int i = 0; i < oreRows; i++)
-        //{
-        //    for (int j = 0; j < oreCols; j++)
-        //    {
-        //        Ore currentOre = oreGrid[i, j];
-        //        currentOre.Neighbours = GetNeighbors(oreGrid, i, j);
-        //    }
-        //}
+        for (int i = 0; i < oreCols; i++)
+        {
+            for (int j = 0; j < oreRows; j++)
+            {
+                Ore currentOre = oreGrid[i, j];
+                currentOre.Neighbours = GetNeighbors(oreGrid, i, j);
+            }
+        }
+
+        foreach (var currOre in remainingOre)
+        {
+            if (currOre != null)
+            {
+                currOre.UpdateTexture();
+            }
+        }
     }
 
+    private Ore[] GetNeighbors(Ore[,] grid, int col, int row)
+    {
+        Ore[] neighbours = new Ore[4];
+
+        if (col < oreCols -1) neighbours[0] = grid[col + 1, row];   // Right
+        if (row > 0) neighbours[1] = grid[col, row - 1];            // Bottom
+        if (col > 0) neighbours[2] = grid[col - 1, row];            // Left
+        if (row < oreRows -1) neighbours[3] = grid[col, row + 1];   // Top
+
+        return neighbours;
+    }
+
+    public string DeterminOrePosition(Ore ore)
+    {
+        bool right = ore.Neighbours[0] == null;
+        bool bottom = ore.Neighbours[1] == null;
+        bool left = ore.Neighbours[2] == null;
+        bool top = ore.Neighbours[3] == null;
+
+        if (left && top && !right) return "TopLeft";
+        if (!left && top && !right) return "TopMiddle";
+        if (!left && top && right) return "TopRight";
+
+        return "MiddleMiddle";
+    }
+
+    public Sprite GetTexture(string name)
+    {
+        oreTextureDict.TryGetValue(name, out Sprite texture);
+        return texture;
+    }
 
     private void OnDrawGizmos()
     {
