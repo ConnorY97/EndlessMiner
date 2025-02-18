@@ -132,7 +132,6 @@ public class Miner : MonoBehaviour
         return newTarget;
     }
 
-
     private void Mine()
     {
         if (target == null) return;

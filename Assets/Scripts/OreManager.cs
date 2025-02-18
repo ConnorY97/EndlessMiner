@@ -173,6 +173,7 @@ public class OreManager : MonoBehaviour
         if (left && top && !right) return "TopLeft";
         if (!left && top && !right) return "TopMiddle";
         if (!left && top && right) return "TopRight";
+        if (left && top && !bottom && right) return "TopMiddle";
         if (left && !top && !bottom && !right) return "MiddleLeft";
         if (!left && !top && !bottom && right) return "MiddleRight";
         if (left && bottom && !right) return "BottomLeft";

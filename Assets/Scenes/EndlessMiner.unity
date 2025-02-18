@@ -273,11 +273,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreCols
-      value: 8
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreRows
-      value: 7
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreSize
