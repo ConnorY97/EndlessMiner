@@ -41,7 +41,7 @@ public class Ore : MonoBehaviour
 
         if (health < 0)
         {
-            NotifyNeighbours();
+            NotifyNeighbours(this);
             return true;
         }
         else
@@ -50,12 +50,19 @@ public class Ore : MonoBehaviour
         }
     }
 
-    private void NotifyNeighbours()
+    private void NotifyNeighbours(Ore thisOre)
     {
         foreach (var currNeighbour in neighbours)
         {
             if (currNeighbour != null)
             {
+                for (int i = 0; i < currNeighbour.Neighbours.Length; i++)
+                {
+                    if (currNeighbour.Neighbours[i] == thisOre)
+                    {
+                        currNeighbour.Neighbours[i] = null;
+                    }
+                }
                 currNeighbour.UpdateTexture();
             }
         }
