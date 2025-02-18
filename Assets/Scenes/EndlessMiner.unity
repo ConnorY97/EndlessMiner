@@ -233,7 +233,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 122942259624230791, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.14
+      value: -1.45
       objectReference: {fileID: 0}
     - target: {fileID: 122942259624230791, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -273,11 +273,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreCols
-      value: 4
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreRows
-      value: 4
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreSize
@@ -293,7 +293,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreSprites.Array.size
-      value: 4
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreTextures.Array.size
@@ -314,7 +314,27 @@ PrefabInstance:
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreSprites.Array.data[3].sprite
       value: 
+      objectReference: {fileID: -6045269988124551188, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
+    - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
+      propertyPath: oreSprites.Array.data[4].sprite
+      value: 
       objectReference: {fileID: -8333202958171376367, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
+    - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
+      propertyPath: oreSprites.Array.data[5].sprite
+      value: 
+      objectReference: {fileID: -1729818555723472959, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
+    - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
+      propertyPath: oreSprites.Array.data[6].sprite
+      value: 
+      objectReference: {fileID: -2094381130127968046, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
+    - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
+      propertyPath: oreSprites.Array.data[7].sprite
+      value: 
+      objectReference: {fileID: 1847422516908647653, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
+    - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
+      propertyPath: oreSprites.Array.data[8].sprite
+      value: 
+      objectReference: {fileID: -5568849602974404179, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreSprites.Array.data[0].oreName
       value: TopLeft
@@ -329,7 +349,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreSprites.Array.data[3].oreName
+      value: MiddleLeft
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
+      propertyPath: oreSprites.Array.data[4].oreName
       value: MiddleMiddle
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
+      propertyPath: oreSprites.Array.data[5].oreName
+      value: MiddleRight
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
+      propertyPath: oreSprites.Array.data[6].oreName
+      value: BottomLeft
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
+      propertyPath: oreSprites.Array.data[7].oreName
+      value: BottomMiddle
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
+      propertyPath: oreSprites.Array.data[8].oreName
+      value: BottomRight
       objectReference: {fileID: 0}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreTextures.Array.data[0].sprite
@@ -392,6 +432,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 855322546809766386, guid: b42778666610b1e48a179e37d6e84e03, type: 3}
+      propertyPath: speed
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1083821623902902876, guid: b42778666610b1e48a179e37d6e84e03, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.34
