@@ -4,53 +4,66 @@ using UnityEngine;
 
 public class Miner : MonoBehaviour
 {
+    private enum STATE
+    {
+        GOINGMINING,
+        MINING,
+        GOINGHOME,
+        HOME,
+        MAX
+    }
+    private STATE currentState = STATE.HOME;
     public float speed = 5f; // Speed at which the miner moves
     private Ore target = null;
 
-    private bool withinRange = false;
     [SerializeField]
     private float damage = 50.0f;
+    [SerializeField]
+    private float homeRange = 1.0f;
+    [SerializeField]
+    private float miningRange = 0.25f;
 
     private float capacity = 100;
-    private bool returnHome = false;
 
+    
     // Update is called once per frame
     void Update()
     {
-        // If there's no target, find the closest one
-        if (target == null)
+        // State machine
+        switch (currentState)
         {
-            target = FindClosestOre();
-            if (target == null)
-            {
-                Debug.Log($"{gameObject.name} cannot find a new target, dying");
-                Destroy(gameObject);
-            }
-            else
-            {
-                Debug.Log($"{gameObject.name} found a new target {target.gameObject.name}.");
-            }
-        }
-        else if (returnHome)
-        {
-            MoveTowardsHome();
-        }
-        else
-        {
-            MoveTowardsTarget();
-        }
+            case STATE.GOINGMINING:
+                // If there's no target, find the closest one
+                if (target == null)
+                {
+                    target = FindClosestOre();
+                    if (target == null)
+                    {
+                        Debug.Log($"{gameObject.name} cannot find a new target, dying");
+                        Destroy(gameObject);
+                    }
+                    else
+                    {
+                        Debug.Log($"{gameObject.name} found a new target {target.gameObject.name}.");
+                    }
+                }
 
-        if (withinRange)
-        {
-            if (returnHome)
-            {
-                capacity = 100;
-                returnHome = false;
-            }
-            else
-            {
+                MoveTowardsTarget();
+                break;
+            case STATE.MINING:
                 Mine();
-            }
+                break;
+            case STATE.GOINGHOME:
+                MoveTowardsHome();
+                break;
+            case STATE.HOME:
+                capacity = 100;
+                currentState = STATE.GOINGMINING;
+                break;
+            case STATE.MAX:
+                break;
+            default:
+                break;
         }
     }
 
@@ -66,14 +79,10 @@ public class Miner : MonoBehaviour
         transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
 
         // Check if the miner has reached the target position
-        if (Vector2.Distance(transform.position, targetPosition) < 1.01f)
+        if (Vector2.Distance(transform.position, targetPosition) < homeRange)
         {
             Debug.Log($"{gameObject.name} reached the {target.name} position.");
-            withinRange = true;
-        }
-        else
-        {
-            withinRange = false;
+            currentState = STATE.HOME;
         }
     }
 
@@ -88,14 +97,10 @@ public class Miner : MonoBehaviour
         transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
 
         // Check if the miner has reached the target position
-        if (Vector2.Distance(transform.position, targetPosition) < 0.01f)
+        if (Vector2.Distance(transform.position, targetPosition) < miningRange)
         {
             Debug.Log($"{gameObject.name} reached the {target.gameObject.name} position.");
-            withinRange = true;
-        }
-        else
-        {
-            withinRange = false;
+            currentState = STATE.MINING;
         }
     }
 
@@ -144,13 +149,23 @@ public class Miner : MonoBehaviour
             OreManager.Instance.RemainingOre.Remove(target);
             target.DestoryOre();
             target = null;
-            withinRange = false;
+            currentState = STATE.GOINGMINING;
         }
 
         if (capacity <= 0)
         {
             // We are full and need to return home
-            returnHome = true;
+            currentState = STATE.GOINGHOME;
+        }
+    }
+
+    private void ReturnOre()
+    {
+        capacity += 10;
+
+        if (capacity >= 100)
+        {
+            
         }
     }
 }
