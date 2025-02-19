@@ -25,6 +25,16 @@ public class Miner : MonoBehaviour
 
     private float capacity = 100;
 
+    private Timer returnOreTimer = TimerUtility.Instance.CreateTimer(1.0f, () =>
+    {
+        capacity += 10;
+
+        if (capacity >= 100)
+        {
+            currentState = STATE.GOINGMINING;
+        }
+    });
+
     
     // Update is called once per frame
     void Update()
@@ -156,16 +166,6 @@ public class Miner : MonoBehaviour
         {
             // We are full and need to return home
             currentState = STATE.GOINGHOME;
-        }
-    }
-
-    private void ReturnOre()
-    {
-        capacity += 10;
-
-        if (capacity >= 100)
-        {
-            
         }
     }
 }

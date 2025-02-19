@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,7 +32,7 @@ public class TimerUtility : MonoBehaviour
         }
     }
 
-    public Timer CreateTimer(float duration, Action onComplete, bool startImmediately = true)
+    public Timer CreateTimer(float duration, Action onComplete, bool startImmediately = false)
     {
         Timer timer = new Timer(duration, onComplete);
         timers.Add(timer);
