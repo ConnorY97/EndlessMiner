@@ -10,9 +10,10 @@ public class Miner : MonoBehaviour
         MINING,
         GOINGHOME,
         HOME,
+        RETURNINGORE,
         MAX
     }
-    private STATE currentState = STATE.HOME;
+    private STATE currentState = STATE.GOINGMINING;
     public float speed = 5f; // Speed at which the miner moves
     private Ore target = null;
 
@@ -25,17 +26,28 @@ public class Miner : MonoBehaviour
 
     private float capacity = 100;
 
-    private Timer returnOreTimer = TimerUtility.Instance.CreateTimer(1.0f, () =>
+    private Timer returnOreTimer;
+
+    private void Start()
     {
-        capacity += 10;
-
-        if (capacity >= 100)
+        returnOreTimer = TimerUtility.Instance.CreateTimer(0.5f, () =>
         {
-            currentState = STATE.GOINGMINING;
-        }
-    });
+            capacity += 10;
 
-    
+            if (capacity >= 100)
+            {
+                currentState = STATE.GOINGMINING;
+            }
+            else
+            {
+                Debug.Log($"Miner {gameObject.name} still retuning ore");
+                returnOreTimer.Reset();
+                TimerUtility.Instance.RegisterTimer(returnOreTimer);
+                returnOreTimer.Start();
+            }
+        });
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -67,8 +79,12 @@ public class Miner : MonoBehaviour
                 MoveTowardsHome();
                 break;
             case STATE.HOME:
-                capacity = 100;
-                currentState = STATE.GOINGMINING;
+                returnOreTimer.Reset();
+                TimerUtility.Instance.RegisterTimer(returnOreTimer);
+                returnOreTimer.Start();
+                currentState = STATE.RETURNINGORE;
+                break;
+            case STATE.RETURNINGORE:
                 break;
             case STATE.MAX:
                 break;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -44,6 +45,14 @@ public class TimerUtility : MonoBehaviour
 
         return timer;
     }
+
+    public void RegisterTimer(Timer timer)
+    {
+        if (timers.Contains(timer) || !timer.IsCompleted)
+        {
+            timers.Add(timer);
+        }
+    }
 }
 
 public class Timer
@@ -66,9 +75,11 @@ public class Timer
 
     public void Start()
     {
-        if (!IsRunning && !IsCompleted)
+        Debug.Log("Timer started");
+        if (!IsRunning)
         {
             IsRunning = true;
+            IsCompleted = false;
         }
     }
 
