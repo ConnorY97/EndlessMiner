@@ -33,7 +33,7 @@ public class Miner : MonoBehaviour
         returnOreTimer = TimerUtility.Instance.CreateTimer(0.5f, () =>
         {
             capacity += 10;
-
+            GameManager.Instance.IncrementOreCout(10);
             if (capacity >= 100)
             {
                 currentState = STATE.GOINGMINING;
@@ -41,9 +41,7 @@ public class Miner : MonoBehaviour
             else
             {
                 Debug.Log($"Miner {gameObject.name} still retuning ore");
-                returnOreTimer.Reset();
-                TimerUtility.Instance.RegisterTimer(returnOreTimer);
-                returnOreTimer.Start();
+                TimerUtility.Instance.RegisterTimer(returnOreTimer, startImmediate: true);
             }
         });
     }
@@ -79,9 +77,7 @@ public class Miner : MonoBehaviour
                 MoveTowardsHome();
                 break;
             case STATE.HOME:
-                returnOreTimer.Reset();
-                TimerUtility.Instance.RegisterTimer(returnOreTimer);
-                returnOreTimer.Start();
+                TimerUtility.Instance.RegisterTimer(returnOreTimer, true);
                 currentState = STATE.RETURNINGORE;
                 break;
             case STATE.RETURNINGORE:

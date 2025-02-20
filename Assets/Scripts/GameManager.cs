@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -46,4 +47,29 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject home = null;
     public GameObject Home { get { return home; } }
+
+    [SerializeField]
+    private TMP_Text oreCountUI = null;
+    private int oreCountInt = 0;
+
+    private void Start()
+    {
+        if (oreCountUI == null)
+        {
+            Debug.LogError("Please assign oreCout");
+        }
+        else
+        {
+            oreCountUI.text = "0"; 
+        }    
+    }
+
+    public void IncrementOreCout(int incrementAmount)
+    {
+        if (oreCountUI != null && incrementAmount > 0)
+        {
+            oreCountInt += incrementAmount;
+            oreCountUI.text = oreCountInt.ToString();
+        }
+    }
 }

@@ -36,21 +36,31 @@ public class TimerUtility : MonoBehaviour
     public Timer CreateTimer(float duration, Action onComplete, bool startImmediately = false)
     {
         Timer timer = new Timer(duration, onComplete);
-        timers.Add(timer);
 
-        if (startImmediately)
-        {
-            timer.Start();
-        }
+        // Register and start the timer if needed
+        RegisterTimer(timer, startImmediate: startImmediately);
 
         return timer;
     }
 
-    public void RegisterTimer(Timer timer)
+    public void RegisterTimer(Timer timer, bool startImmediate = false)
     {
-        if (timers.Contains(timer) || !timer.IsCompleted)
+        // Automatically reset the timer if it's completed
+        if (timer.IsCompleted)
+        {
+            timer.Reset();
+        }
+
+        // Add the timer to the active timers list if it's not already tracked
+        if (!timers.Contains(timer))
         {
             timers.Add(timer);
+        }
+
+        // Start the timer immediately if requested
+        if (startImmediate)
+        {
+            timer.Start();
         }
     }
 }
