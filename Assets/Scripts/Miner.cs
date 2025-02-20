@@ -11,6 +11,7 @@ public class Miner : MonoBehaviour
         GOINGHOME,
         HOME,
         RETURNINGORE,
+        SPAWNING,
         MAX
     }
     private STATE currentState = STATE.GOINGMINING;
@@ -23,6 +24,8 @@ public class Miner : MonoBehaviour
     private float homeRange = 1.0f;
     [SerializeField]
     private float miningRange = 0.25f;
+    [SerializeField]
+    private float returnSpeed = 0.25f;
 
     private float capacity = 100;
 
@@ -30,7 +33,7 @@ public class Miner : MonoBehaviour
 
     private void Start()
     {
-        returnOreTimer = TimerUtility.Instance.CreateTimer(0.5f, () =>
+        returnOreTimer = TimerUtility.Instance.CreateTimer(returnSpeed, () =>
         {
             capacity += 10;
             GameManager.Instance.IncrementOreCout(10);
@@ -59,8 +62,7 @@ public class Miner : MonoBehaviour
                     target = FindClosestOre();
                     if (target == null)
                     {
-                        Debug.Log($"{gameObject.name} cannot find a new target, dying");
-                        Destroy(gameObject);
+                        OreManager.Instance.InstantiateGrid();
                     }
                     else
                     {
@@ -171,7 +173,14 @@ public class Miner : MonoBehaviour
             OreManager.Instance.RemainingOre.Remove(target);
             target.DestoryOre();
             target = null;
-            currentState = STATE.GOINGMINING;
+            if (OreManager.Instance.RemainingOre.Count == 0)
+            {
+                currentState = STATE.GOINGHOME;
+            }
+            else
+            {
+                currentState = STATE.GOINGMINING;
+            }
         }
 
         if (capacity <= 0)

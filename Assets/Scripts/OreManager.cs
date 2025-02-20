@@ -84,7 +84,7 @@ public class OreManager : MonoBehaviour
         }
         else
         {
-            InstantiateGrid(orePrefab);
+            InstantiateGrid();
         }
     }
 
@@ -111,7 +111,8 @@ public class OreManager : MonoBehaviour
 
         return gridPositions;
     }
-    public void InstantiateGrid(GameObject prefab)
+
+    public void InstantiateGrid()
     {
         // Get the grid positions
         Vector3[,] gridPositions = GenerateGridPositions();
@@ -123,7 +124,7 @@ public class OreManager : MonoBehaviour
         {
             for (int j = 0; j < oreRows; j++)
             {
-                GameObject currentOre = Instantiate(prefab, gridPositions[i, j], Quaternion.identity);
+                GameObject currentOre = Instantiate(orePrefab, gridPositions[i, j], Quaternion.identity);
                 currentOre.name = $"Ore {i}x{j}";
                 Ore oreRef = currentOre.GetComponent<Ore>();
                 oreRef.Init(currentFloor, oreSize, currentFloor);
