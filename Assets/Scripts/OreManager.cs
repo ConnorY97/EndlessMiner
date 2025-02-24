@@ -75,6 +75,9 @@ public class OreManager : MonoBehaviour
 
     private Dictionary<string, Sprite> oreTextureDict;
 
+    [SerializeField]
+    private SpriteRenderer barRenderer;
+
     // Start is called before the first frame update
     void Start()
     {

@@ -7,6 +7,7 @@ public class Miner : MonoBehaviour
     private enum STATE
     {
         GOINGMINING,
+        STARTMINING,
         MINING,
         GOINGHOME,
         HOME,
@@ -26,10 +27,13 @@ public class Miner : MonoBehaviour
     private float miningRange = 0.25f;
     [SerializeField]
     private float returnSpeed = 0.25f;
+    [SerializeField]
+    private float mineSpeed = 0.25f;
 
     private float capacity = 100;
 
     private Timer returnOreTimer;
+    private Timer minetimer;
 
     private void Start()
     {
@@ -45,6 +49,15 @@ public class Miner : MonoBehaviour
             {
                 Debug.Log($"Miner {gameObject.name} still retuning ore");
                 TimerUtility.Instance.RegisterTimer(returnOreTimer, startImmediate: true);
+            }
+        });
+
+        minetimer = TimerUtility.Instance.CreateTimer(mineSpeed, () =>
+        {
+            if (!Mine())
+            {
+                Debug.Log($"Miner {gameObject.name} still mining ore");
+                TimerUtility.Instance.RegisterTimer(minetimer, startImmediate: true);
             }
         });
     }
@@ -72,8 +85,11 @@ public class Miner : MonoBehaviour
 
                 MoveTowardsTarget();
                 break;
+            case STATE.STARTMINING:
+                TimerUtility.Instance.RegisterTimer(minetimer, startImmediate: true);
+                currentState = STATE.MINING;
+                break;
             case STATE.MINING:
-                Mine();
                 break;
             case STATE.GOINGHOME:
                 MoveTowardsHome();
@@ -124,7 +140,7 @@ public class Miner : MonoBehaviour
         if (Vector2.Distance(transform.position, targetPosition) < miningRange)
         {
             Debug.Log($"{gameObject.name} reached the {target.gameObject.name} position.");
-            currentState = STATE.MINING;
+            currentState = STATE.STARTMINING;
         }
     }
 
@@ -161,9 +177,9 @@ public class Miner : MonoBehaviour
         return newTarget;
     }
 
-    private void Mine()
+    private bool Mine()
     {
-        if (target == null) return;
+        if (target == null) return false;
 
         capacity -= target.Value;
 
@@ -173,7 +189,7 @@ public class Miner : MonoBehaviour
             OreManager.Instance.RemainingOre.Remove(target);
             target.DestoryOre();
             target = null;
-            if (OreManager.Instance.RemainingOre.Count == 0)
+            if (OreManager.Instance.RemainingOre.Count == 0 || capacity <= 0)
             {
                 currentState = STATE.GOINGHOME;
             }
@@ -181,12 +197,8 @@ public class Miner : MonoBehaviour
             {
                 currentState = STATE.GOINGMINING;
             }
+            return true;
         }
-
-        if (capacity <= 0)
-        {
-            // We are full and need to return home
-            currentState = STATE.GOINGHOME;
-        }
+        return false;
     }
 }
