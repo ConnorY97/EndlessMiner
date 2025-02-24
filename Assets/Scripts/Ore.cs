@@ -1,3 +1,4 @@
+using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
 
 public class Ore : MonoBehaviour
@@ -13,7 +14,7 @@ public class Ore : MonoBehaviour
     public GameObject MinePos { get { return minePos; } }
 
     private bool targeted = false;
-    public bool Targeted { get { return targeted; } set { } }
+    public bool Targeted { get { return targeted; } set { targeted = value; } }
 
     private float value = 10.0f;
     public float Value { get { return value; } }
@@ -21,15 +22,15 @@ public class Ore : MonoBehaviour
     private Ore[] neighbours = null;
     public Ore[] Neighbours { get { return neighbours; } set { neighbours = value; } }
 
-    private SpriteRenderer renderer = null;
+    private SpriteRenderer spriteRenderer = null;
 
     [SerializeField]
     private SpriteRenderer barRenderer = null;
 
     public void Init(float healtMultiplyer, float oreScaling, float valueMultiplayer)
     {
-        renderer = GetComponent<SpriteRenderer>();
-        if (renderer == null)
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer == null)
         {
             Debug.LogError($"Failed to retrieve the renderer on {gameObject.name}");
             return;
@@ -94,7 +95,7 @@ public class Ore : MonoBehaviour
     {
         string textureKey = OreManager.Instance.DeterminOrePosition(this);
         Sprite newTexture = OreManager.Instance.GetTexture(textureKey);
-        renderer.sprite = newTexture;
+        spriteRenderer.sprite = newTexture;
     }
 
     public void DestoryOre()

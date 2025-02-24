@@ -90,6 +90,10 @@ public class Miner : MonoBehaviour
                 currentState = STATE.MINING;
                 break;
             case STATE.MINING:
+                if (target == null)
+                {
+                    currentState = STATE.GOINGMINING;
+                }
                 break;
             case STATE.GOINGHOME:
                 MoveTowardsHome();
@@ -169,12 +173,15 @@ public class Miner : MonoBehaviour
             {
                 closestDistance = currentDistance;
                 newTarget = ore;
-                // Ensure that only one miner targets an ore at a time
-                ore.Targeted = true;
             }
         }
 
-        return newTarget;
+        if (newTarget != null)
+        {
+            newTarget.Targeted = true;
+            return newTarget;
+        }
+        return null;
     }
 
     private bool Mine()
@@ -192,11 +199,21 @@ public class Miner : MonoBehaviour
             if (OreManager.Instance.RemainingOre.Count == 0 || capacity <= 0)
             {
                 currentState = STATE.GOINGHOME;
+                return true;
+
             }
             else
             {
                 currentState = STATE.GOINGMINING;
             }
+            return true;
+        }
+
+        if (capacity <= 0)
+        {
+            currentState = STATE.GOINGHOME;
+            target.Targeted = false;
+            target = null;
             return true;
         }
         return false;

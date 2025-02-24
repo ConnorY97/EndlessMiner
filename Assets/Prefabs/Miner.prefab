@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 667268861815619069}
   m_Layer: 0
   m_Name: Miner
-  m_TagString: Untagged
+  m_TagString: Miner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,7 +99,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39f8ac564a2629b49ae45662e84ffb55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 7
+  damage: 50
+  homeRange: 1
+  miningRange: 0.25
+  returnSpeed: 0.1
+  mineSpeed: 0.25
 --- !u!58 &577079934713968457
 CircleCollider2D:
   m_ObjectHideFlags: 0

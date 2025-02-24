@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -52,6 +53,15 @@ public class GameManager : MonoBehaviour
     private TMP_Text oreCountUI = null;
     private int oreCountInt = 0;
 
+    [SerializeField]
+    private Button spawnMiner = null;
+
+    [SerializeField]
+    private float minerCost = 500.0f;
+
+    [SerializeField]
+    private GameObject miner = null;
+
     private void Start()
     {
         if (oreCountUI == null)
@@ -61,7 +71,12 @@ public class GameManager : MonoBehaviour
         else
         {
             oreCountUI.text = "0"; 
-        }    
+        }
+
+        if (spawnMiner == null)
+        {
+            Debug.LogError("Please assign spawnMiner Icon");
+        }
     }
 
     public void IncrementOreCout(int incrementAmount)
@@ -71,5 +86,23 @@ public class GameManager : MonoBehaviour
             oreCountInt += incrementAmount;
             oreCountUI.text = oreCountInt.ToString();
         }
+
+        if (oreCountInt > minerCost)
+        {
+            spawnMiner.interactable = true;
+        }
+    }
+
+    public void BuyMinger(int amount)
+    {
+        oreCountInt -= amount;
+        oreCountUI.text = oreCountInt.ToString();
+
+        if (oreCountInt < minerCost)
+        {
+            spawnMiner.interactable = false;
+        }
+
+        Instantiate(miner, transform);
     }
 }
