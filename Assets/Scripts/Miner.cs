@@ -32,7 +32,7 @@ public class Miner : MonoBehaviour
     protected float returnSpeed = 0.25f;
     [SerializeField]
     protected float mineSpeed = 0.25f;
-
+    [SerializeField]
     protected float capacity = 100;
 
     protected Timer returnOreTimer;

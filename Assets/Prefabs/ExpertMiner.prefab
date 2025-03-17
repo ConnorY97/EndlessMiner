@@ -131,3 +131,4 @@ MonoBehaviour:
   miningRange: 0.25
   returnSpeed: 0.25
   mineSpeed: 0.25
+  capacity: 300

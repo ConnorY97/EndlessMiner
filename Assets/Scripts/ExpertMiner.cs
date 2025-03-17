@@ -17,49 +17,39 @@ public class ExpertMiner : Miner
     // This miner will be able to mine ore to the left and right or their target, if they exist
     protected override bool Mine()
     {
-        bool minedTarget = false;
         if (target == null) return false;
 
-        capacity -= target.Value * 3;
-
-        if (target.Mined(damage))
-        {
-            TargetMined(target);
-            minedTarget = true;
-        }
+        // Adding the target-able ore
+        List<Ore> ores = new List<Ore>();
+        ores.Add(target);
 
         if (target.Neighbors[0] != null)
         {
-            Ore leftNeighbor = target.Neighbors[0];
-            if (leftNeighbor.Mined(damage))
-            {
-                TargetMined(leftNeighbor);
-                Log("Left neighbor mined");
-            }
+            ores.Add(target.Neighbors[0]);
         }
         if (target.Neighbors[2] != null)
         {
-            Ore rightNeighbor = target.Neighbors[2];
-            if (rightNeighbor.Mined(damage))
-            {
-                TargetMined(rightNeighbor);
-                Log("Right neighbor mined");
-            }
+            ores.Add(target.Neighbors[2]);
         }
 
-        if (minedTarget)
+        foreach (Ore currentTarget in ores)
         {
-            if (OreManager.Instance.RemainingOre.Count == 0 || capacity <= 0)
-            {
-                currentState = STATE.GOINGHOME;
-            }
-            else
-            {
-                currentState = STATE.GOINGMINING;
-            }
-            return true;
-        }
+            capacity -= currentTarget.Value;
 
+            if (currentTarget.Mined(damage))
+            {
+                TargetMined(currentTarget);
+                if (OreManager.Instance.RemainingOre.Count == 0 || capacity <= 0)
+                {
+                    currentState = STATE.GOINGHOME;
+                }
+                else
+                {
+                    currentState = STATE.GOINGMINING;
+                }
+                return true;
+            }
+        }
         return false;
     }
 }
