@@ -20,14 +20,14 @@ public class Ore : MonoBehaviour
     public float Value { get { return value; } }
 
     private Ore[] neighbours = null;
-    public Ore[] Neighbours { get { return neighbours; } set { neighbours = value; } }
+    public Ore[] Neighbors { get { return neighbours; } set { neighbours = value; } }
 
     private SpriteRenderer spriteRenderer = null;
 
     [SerializeField]
     private SpriteRenderer barRenderer = null;
 
-    public void Init(float healtMultiplyer, float oreScaling, float valueMultiplayer)
+    public void Init(float healthMultiplier, float oreScaling, float valueMultiplier)
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer == null)
@@ -36,9 +36,9 @@ public class Ore : MonoBehaviour
             return;
         }
 
-        health *= healtMultiplyer;
+        health *= healthMultiplier;
         gameObject.transform.localScale = new Vector3(oreScaling, oreScaling, oreScaling);
-        value *= valueMultiplayer;
+        value *= valueMultiplier;
 
         if (barRenderer == null)
         {
@@ -79,11 +79,11 @@ public class Ore : MonoBehaviour
         {
             if (currNeighbour != null)
             {
-                for (int i = 0; i < currNeighbour.Neighbours.Length; i++)
+                for (int i = 0; i < currNeighbour.Neighbors.Length; i++)
                 {
-                    if (currNeighbour.Neighbours[i] == thisOre)
+                    if (currNeighbour.Neighbors[i] == thisOre)
                     {
-                        currNeighbour.Neighbours[i] = null;
+                        currNeighbour.Neighbors[i] = null;
                     }
                 }
                 currNeighbour.UpdateTexture();
@@ -98,7 +98,7 @@ public class Ore : MonoBehaviour
         spriteRenderer.sprite = newTexture;
     }
 
-    public void DestoryOre()
+    public void DestroyOre()
     {
         Destroy(gameObject);
     }

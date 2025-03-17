@@ -57,10 +57,16 @@ public class GameManager : MonoBehaviour
     private Button spawnMiner = null;
 
     [SerializeField]
+    private Button spawnExpertMiner = null;
+
+    [SerializeField]
     private float minerCost = 500.0f;
 
     [SerializeField]
     private GameObject miner = null;
+
+    [SerializeField]
+    private GameObject expertMiner = null;
 
     private List<Miner> miners = new List<Miner>();
     public List<Miner> Miners { get { return miners; } }
@@ -78,6 +84,11 @@ public class GameManager : MonoBehaviour
         if (spawnMiner == null)
         {
             Debug.LogError("Please assign spawnMiner Icon");
+        }
+
+        if (spawnExpertMiner == null)
+        {
+            Debug.LogError("Please assign spawnExpertMiner Icon");
         }
 
         Miner startingMiner = FindObjectOfType<Miner>();
@@ -103,6 +114,11 @@ public class GameManager : MonoBehaviour
         {
             spawnMiner.interactable = true;
         }
+
+        if (oreCountInt > (minerCost * 1.25f))
+        {
+            spawnExpertMiner.interactable = true;
+        }
     }
 
     public void BuyMiner(int amount)
@@ -115,7 +131,18 @@ public class GameManager : MonoBehaviour
             spawnMiner.interactable = false;
         }
 
-        GameObject newMiner = Instantiate(miner, transform);
-        miners.Add(newMiner.GetComponent<Miner>());
+        miners.Add(Instantiate(miner, transform).GetComponent<Miner>());
+    }
+
+    public void BuyExpertMiner(int amount)
+    {
+        oreCountInt -= amount;
+
+        if (oreCountInt < (minerCost * 1.25f))
+        {
+            spawnExpertMiner.interactable = false;
+        }
+
+        miners.Add(Instantiate(expertMiner, transform).GetComponent<Miner>());
     }
 }

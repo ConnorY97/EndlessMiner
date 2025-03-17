@@ -152,7 +152,7 @@ public class OreManager : MonoBehaviour
             for (int j = 0; j < oreRows; j++)
             {
                 Ore currentOre = oreGrid[i, j];
-                currentOre.Neighbours = GetNeighbors(oreGrid, i, j);
+                currentOre.Neighbors = GetNeighbors(oreGrid, i, j);
             }
         }
 
@@ -198,10 +198,10 @@ public class OreManager : MonoBehaviour
 
 
         // Generate a key based on neighbour conditions
-        string key = $"{BoolToBit(ore.Neighbours[0] == null)}" + // Right
-                     $"{BoolToBit(ore.Neighbours[1] == null)}" + // Bottom
-                     $"{BoolToBit(ore.Neighbours[2] == null)}" + // Left
-                     $"{BoolToBit(ore.Neighbours[3] == null)}";  // Top
+        string key = $"{BoolToBit(ore.Neighbors[0] == null)}" + // Right
+                     $"{BoolToBit(ore.Neighbors[1] == null)}" + // Bottom
+                     $"{BoolToBit(ore.Neighbors[2] == null)}" + // Left
+                     $"{BoolToBit(ore.Neighbors[3] == null)}";  // Top
 
         return positionMap.TryGetValue(key, out string position) ? position : "MiddleMiddle";
     }

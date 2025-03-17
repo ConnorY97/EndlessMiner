@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Android.Gradle;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Miner : MonoBehaviour
 {
-    private enum STATE
+    protected enum STATE
     {
         GOINGMINING,
         STARTMINING,
@@ -15,27 +17,35 @@ public class Miner : MonoBehaviour
         SPAWNING,
         MAX
     }
-    private STATE currentState = STATE.GOINGMINING;
-    public float speed = 5f; // Speed at which the miner moves
-    private Ore target = null;
+    protected STATE currentState = STATE.GOINGMINING;
+    [SerializeField]
+    protected float speed = 5f; // Speed at which the miner moves
+    protected Ore target = null;
 
     [SerializeField]
-    private float damage = 50.0f;
+    protected float damage = 50.0f;
     [SerializeField]
-    private float homeRange = 1.0f;
+    protected float homeRange = 1.0f;
     [SerializeField]
-    private float miningRange = 0.25f;
+    protected float miningRange = 0.25f;
     [SerializeField]
-    private float returnSpeed = 0.25f;
+    protected float returnSpeed = 0.25f;
     [SerializeField]
-    private float mineSpeed = 0.25f;
+    protected float mineSpeed = 0.25f;
 
-    private float capacity = 100;
+    protected float capacity = 100;
 
-    private Timer returnOreTimer;
-    private Timer minetimer;
+    protected Timer returnOreTimer;
+    protected Timer mineTimer;
+
+    protected bool logging = true;
 
     private void Start()
+    {
+        Init();
+    }
+
+    protected virtual void Init()
     {
         returnOreTimer = TimerUtility.Instance.CreateTimer(returnSpeed, () =>
         {
@@ -52,18 +62,23 @@ public class Miner : MonoBehaviour
             }
         });
 
-        minetimer = TimerUtility.Instance.CreateTimer(mineSpeed, () =>
+        mineTimer = TimerUtility.Instance.CreateTimer(mineSpeed, () =>
         {
             if (!Mine())
             {
                 Debug.Log($"Miner {gameObject.name} still mining ore");
-                TimerUtility.Instance.RegisterTimer(minetimer, startImmediate: true);
+                TimerUtility.Instance.RegisterTimer(mineTimer, startImmediate: true);
             }
         });
     }
 
     // Update is called once per frame
     void Update()
+    {
+        Tick();
+    }
+
+    protected virtual void Tick()
     {
         // State machine
         switch (currentState)
@@ -80,14 +95,14 @@ public class Miner : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log($"{gameObject.name} found a new target {target.gameObject.name}.");
+                        ForceLog($"{gameObject.name} found a new target {target.gameObject.name}.");
                     }
                 }
 
                 MoveTowardsTarget();
                 break;
             case STATE.STARTMINING:
-                TimerUtility.Instance.RegisterTimer(minetimer, startImmediate: true);
+                TimerUtility.Instance.RegisterTimer(mineTimer, startImmediate: true);
                 currentState = STATE.MINING;
                 break;
             case STATE.MINING:
@@ -111,7 +126,6 @@ public class Miner : MonoBehaviour
                 break;
         }
     }
-
     private void MoveTowardsHome()
     {
         GameObject target = GameManager.Instance.Home;
@@ -126,7 +140,7 @@ public class Miner : MonoBehaviour
         // Check if the miner has reached the target position
         if (Vector2.Distance(transform.position, targetPosition) < homeRange)
         {
-            Debug.Log($"{gameObject.name} reached the {target.name} position.");
+            Log($"{gameObject.name} reached the {target.name} position.");
             currentState = STATE.HOME;
         }
     }
@@ -144,7 +158,7 @@ public class Miner : MonoBehaviour
         // Check if the miner has reached the target position
         if (Vector2.Distance(transform.position, targetPosition) < miningRange)
         {
-            Debug.Log($"{gameObject.name} reached the {target.gameObject.name} position.");
+            Log($"{gameObject.name} reached the {target.gameObject.name} position.");
             currentState = STATE.STARTMINING;
         }
     }
@@ -171,17 +185,17 @@ public class Miner : MonoBehaviour
         // If no ores are in the current row, allow targeting from other rows
         if (oresInPreviousRow.Count > 0)
         {
-            Debug.Log("Targeting ores in previous row");
+            Log("Targeting ores in previous row");
             targetOres = oresInPreviousRow;
         }
         else if (oresInCurrentRow.Count > 0)
         {
-            Debug.Log("Targeting ores in current row");
+            Log("Targeting ores in current row");
             targetOres = oresInCurrentRow;
         }
         else
         {
-            Debug.Log("Targeting any ore");
+            Log("Targeting any ore");
             targetOres = ores;
         }
 
@@ -204,7 +218,7 @@ public class Miner : MonoBehaviour
         return null;
     }
 
-    private bool Mine()
+    protected virtual bool Mine()
     {
         if (target == null) return false;
 
@@ -212,15 +226,10 @@ public class Miner : MonoBehaviour
 
         if (target.Mined(damage))
         {
-            Debug.Log($"{gameObject.name} mined {target.gameObject.name}");
-            OreManager.Instance.RemainingOre.Remove(target);
-            target.DestoryOre();
-            target = null;
+            TargetMined(target);
             if (OreManager.Instance.RemainingOre.Count == 0 || capacity <= 0)
             {
                 currentState = STATE.GOINGHOME;
-                return true;
-
             }
             else
             {
@@ -237,5 +246,27 @@ public class Miner : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    protected void Log(string msg)
+    {
+        if (logging)
+        {
+            Debug.Log(msg);
+        }
+    }
+
+    private void ForceLog(string msg)
+    {
+        Debug.Log(msg);
+    }
+
+    protected void TargetMined(Ore mined)
+    {
+        Log($"{gameObject.name} mined {mined.gameObject.name}");
+        OreManager.Instance.RemainingOre.Remove(mined);
+        mined.DestroyOre();
+        if (mined == target)
+            target = null;
     }
 }
