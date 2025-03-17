@@ -93,7 +93,7 @@ public class Ore : MonoBehaviour
 
     public void UpdateTexture()
     {
-        string textureKey = OreManager.Instance.DeterminOrePosition(this);
+        string textureKey = OreManager.Instance.DetermineOrePosition(this);
         Sprite newTexture = OreManager.Instance.GetTexture(textureKey);
         spriteRenderer.sprite = newTexture;
     }

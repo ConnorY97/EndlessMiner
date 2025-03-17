@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject miner = null;
 
+    private List<Miner> miners = new List<Miner>();
+    public List<Miner> Miners { get { return miners; } }
     private void Start()
     {
         if (oreCountUI == null)
@@ -70,16 +72,26 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            oreCountUI.text = "0"; 
+            oreCountUI.text = "0";
         }
 
         if (spawnMiner == null)
         {
             Debug.LogError("Please assign spawnMiner Icon");
         }
+
+        Miner startingMiner = FindObjectOfType<Miner>();
+        if (startingMiner != null)
+        {
+            miners.Add(startingMiner);
+        }
+        else
+        {
+            Debug.Log("Failed to find starting miner");
+        }
     }
 
-    public void IncrementOreCout(int incrementAmount)
+    public void IncrementOreCount(int incrementAmount)
     {
         if (oreCountUI != null && incrementAmount > 0)
         {
@@ -93,7 +105,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void BuyMinger(int amount)
+    public void BuyMiner(int amount)
     {
         oreCountInt -= amount;
         oreCountUI.text = oreCountInt.ToString();
@@ -103,6 +115,7 @@ public class GameManager : MonoBehaviour
             spawnMiner.interactable = false;
         }
 
-        Instantiate(miner, transform);
+        GameObject newMiner = Instantiate(miner, transform);
+        miners.Add(newMiner.GetComponent<Miner>());
     }
 }

@@ -65,7 +65,7 @@ public class OreManager : MonoBehaviour
     public int oreCols = 10;
     public float oreSize = 1;
     public float oreSpacing = 1.25f;
-
+    public bool drawGizmos = true;
     public float currentFloor = 1;
 
     private List<Ore> remainingOre = new List<Ore>();
@@ -88,6 +88,19 @@ public class OreManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (remainingOre.Count <= 0)
+        {
+            foreach (Miner miner in GameManager.Instance.Miners)
+            {
+                Debug.Log("Returning miners home to instantiate new grid");
+                miner.transform.position = GameManager.Instance.Home.transform.position;
+            }
+
+            InstantiateGrid();
+        }
+    }
     private Vector3[,] GenerateGridPositions()
     {
         // Create a 2D array to hold the positions
@@ -164,7 +177,7 @@ public class OreManager : MonoBehaviour
         return neighbours;
     }
 
-    public string DeterminOrePosition(Ore ore)
+    public string DetermineOrePosition(Ore ore)
     {
         var positionMap = new Dictionary<string, string>
         {
@@ -204,17 +217,20 @@ public class OreManager : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (oreCols < 0 || oreRows < 0) return;
-        // Get the grid positions
-        Vector3[,] gridPositions = GenerateGridPositions();
-
-        // Draw the cubes using Gizmos
-        for (int i = 0; i < oreCols; i++)
+        if (drawGizmos)
         {
-            for (int j = 0; j < oreRows; j++)
+            if (oreCols < 0 || oreRows < 0) return;
+            // Get the grid positions
+            Vector3[,] gridPositions = GenerateGridPositions();
+
+            // Draw the cubes using Gizmos
+            for (int i = 0; i < oreCols; i++)
             {
-                Gizmos.color = Color.grey;
-                Gizmos.DrawCube(gridPositions[i, j], Vector3.one * oreSize);
+                for (int j = 0; j < oreRows; j++)
+                {
+                    Gizmos.color = Color.grey;
+                    Gizmos.DrawCube(gridPositions[i, j], Vector3.one * oreSize);
+                }
             }
         }
     }

@@ -40,7 +40,7 @@ public class Miner : MonoBehaviour
         returnOreTimer = TimerUtility.Instance.CreateTimer(returnSpeed, () =>
         {
             capacity += 10;
-            GameManager.Instance.IncrementOreCout(10);
+            GameManager.Instance.IncrementOreCount(10);
             if (capacity >= 100)
             {
                 currentState = STATE.GOINGMINING;
@@ -75,7 +75,8 @@ public class Miner : MonoBehaviour
                     target = FindClosestOre();
                     if (target == null)
                     {
-                        OreManager.Instance.InstantiateGrid();
+                        // If something happens to the target, just go home. Don't create a new grid
+                        currentState = STATE.GOINGHOME;
                     }
                     else
                     {
@@ -157,13 +158,32 @@ public class Miner : MonoBehaviour
         // Calculate the miner's current row based on its position
         float minerRow = Mathf.Floor(transform.position.y / OreManager.Instance.oreSpacing);
 
+        // Make sure there are no ore that are behind the miner
+        List<Ore> oresInPreviousRow = ores.FindAll(ore => Mathf.Floor(ore.MinePos.transform.position.y / OreManager.Instance.oreSpacing) == minerRow + 1
+        );
+
         // Filter ores in the same row as the miner
         List<Ore> oresInCurrentRow = ores.FindAll(ore =>
             Mathf.Floor(ore.MinePos.transform.position.y / OreManager.Instance.oreSpacing) == minerRow
         );
 
+        List<Ore> targetOres = new List<Ore>();
         // If no ores are in the current row, allow targeting from other rows
-        List<Ore> targetOres = oresInCurrentRow.Count > 0 ? oresInCurrentRow : ores;
+        if (oresInPreviousRow.Count > 0)
+        {
+            Debug.Log("Targeting ores in previous row");
+            targetOres = oresInPreviousRow;
+        }
+        else if (oresInCurrentRow.Count > 0)
+        {
+            Debug.Log("Targeting ores in current row");
+            targetOres = oresInCurrentRow;
+        }
+        else
+        {
+            Debug.Log("Targeting any ore");
+            targetOres = ores;
+        }
 
         // Find the closest ore from the target ores
         foreach (Ore ore in targetOres)

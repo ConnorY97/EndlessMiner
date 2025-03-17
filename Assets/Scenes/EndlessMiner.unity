@@ -727,11 +727,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreCols
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreRows
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreSize
@@ -741,6 +741,10 @@ PrefabInstance:
       propertyPath: orePrefab
       value: 
       objectReference: {fileID: 5787143029429335955, guid: 482c4e2a2db61334fb7086da5060d05c, type: 3}
+    - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
+      propertyPath: drawGizmos
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreSpacing
       value: 0.49
