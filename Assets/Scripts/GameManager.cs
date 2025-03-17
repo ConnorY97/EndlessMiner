@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Please assign spawnExpertMiner Icon");
         }
 
-        Miner startingMiner = FindObjectOfType<Miner>();
+        Miner startingMiner = GameObject.FindWithTag("Miner").GetComponent<Miner>();
         if (startingMiner != null)
         {
             miners.Add(startingMiner);

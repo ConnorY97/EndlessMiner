@@ -2,25 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExpertMiner : Miner
+/// <summary>
+/// Mines ore in a straight line, fast with low capacity
+/// </summary>
+public class StripMiner : Miner
 {
-    // This miner will be able to mine ore to the left and right or their target, if they exist
     protected override bool Mine()
     {
         if (target == null) return false;
 
-        // Adding the target-able ore
         List<Ore> ores = new List<Ore>();
         ores.Add(target);
-
-        if (target.Neighbors[0] != null)
+        Ore oreExists = FindOreBehing(target);
+        // Work down the ore in a line till we find the end
+        while (oreExists != null)
         {
-            ores.Add(target.Neighbors[0]);
+            ores.Add(oreExists);
+                oreExists = FindOreBehing(oreExists);
         }
-        if (target.Neighbors[2] != null)
-        {
-            ores.Add(target.Neighbors[2]);
-        }
+        // IT WORKS
 
         foreach (Ore currentTarget in ores)
         {
@@ -39,6 +39,12 @@ public class ExpertMiner : Miner
                 return true;
             }
         }
+
         return false;
+    }
+
+    private Ore FindOreBehing(Ore firstore)
+    {
+        return firstore.Neighbors[1] ? firstore.Neighbors[1] : null;
     }
 }

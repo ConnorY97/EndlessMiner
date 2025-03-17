@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Unity.Android.Gradle;
 using Unity.VisualScripting;
 using UnityEngine;
-
+/// <summary>
+/// Base miner, mines the ore directly in front of them. Slow with low capacity
+/// </summary>
 public class Miner : MonoBehaviour
 {
     protected enum STATE
@@ -21,7 +23,6 @@ public class Miner : MonoBehaviour
     [SerializeField]
     protected float speed = 5f; // Speed at which the miner moves
     protected Ore target = null;
-
     [SerializeField]
     protected float damage = 50.0f;
     [SerializeField]
@@ -34,6 +35,7 @@ public class Miner : MonoBehaviour
     protected float mineSpeed = 0.25f;
     [SerializeField]
     protected float capacity = 100;
+    private float startingCapacity = 0;
 
     protected Timer returnOreTimer;
     protected Timer mineTimer;
@@ -47,17 +49,18 @@ public class Miner : MonoBehaviour
 
     protected virtual void Init()
     {
+        startingCapacity = capacity;
         returnOreTimer = TimerUtility.Instance.CreateTimer(returnSpeed, () =>
         {
             capacity += 10;
             GameManager.Instance.IncrementOreCount(10);
-            if (capacity >= 100)
+            if (capacity >= startingCapacity)
             {
                 currentState = STATE.GOINGMINING;
             }
             else
             {
-                Debug.Log($"Miner {gameObject.name} still retuning ore");
+                Log($"Miner {gameObject.name} still retuning ore");
                 TimerUtility.Instance.RegisterTimer(returnOreTimer, startImmediate: true);
             }
         });
@@ -66,7 +69,7 @@ public class Miner : MonoBehaviour
         {
             if (!Mine())
             {
-                Debug.Log($"Miner {gameObject.name} still mining ore");
+                Log($"Miner {gameObject.name} still mining ore");
                 TimerUtility.Instance.RegisterTimer(mineTimer, startImmediate: true);
             }
         });
@@ -222,10 +225,10 @@ public class Miner : MonoBehaviour
     {
         if (target == null) return false;
 
-        capacity -= target.Value;
-
         if (target.Mined(damage))
         {
+            capacity -= target.Value;
+
             TargetMined(target);
             if (OreManager.Instance.RemainingOre.Count == 0 || capacity <= 0)
             {
@@ -235,14 +238,6 @@ public class Miner : MonoBehaviour
             {
                 currentState = STATE.GOINGMINING;
             }
-            return true;
-        }
-
-        if (capacity <= 0)
-        {
-            currentState = STATE.GOINGHOME;
-            target.Targeted = false;
-            target = null;
             return true;
         }
         return false;
