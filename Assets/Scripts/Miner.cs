@@ -40,7 +40,12 @@ public class Miner : MonoBehaviour
     protected Timer returnOreTimer;
     protected Timer mineTimer;
 
+    [SerializeField]
     protected bool logging = true;
+    [SerializeField]
+    protected bool debugDraw = false;
+    [SerializeField]
+    protected float debugRadius = 0.1f;
 
     private void Start()
     {
@@ -166,7 +171,7 @@ public class Miner : MonoBehaviour
         }
     }
 
-    private Ore FindClosestOre()
+    protected virtual Ore FindClosestOre()
     {
         List<Ore> ores = OreManager.Instance.RemainingOre;
         Ore newTarget = null;

@@ -686,6 +686,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: StripMiner
       objectReference: {fileID: 0}
+    - target: {fileID: 1543363520816999248, guid: 1f882808a902d7b48b2d7221c2287ca3, type: 3}
+      propertyPath: logging
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1543363520816999248, guid: 1f882808a902d7b48b2d7221c2287ca3, type: 3}
+      propertyPath: capacity
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1543363520816999248, guid: 1f882808a902d7b48b2d7221c2287ca3, type: 3}
+      propertyPath: debugDraw
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6808268726632999297, guid: 1f882808a902d7b48b2d7221c2287ca3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.18542957
@@ -933,7 +945,7 @@ PrefabInstance:
       objectReference: {fileID: 5787143029429335955, guid: 482c4e2a2db61334fb7086da5060d05c, type: 3}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: drawGizmos
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2940126807666793569, guid: 9e86a21165ad53a46abc1345f72a9dd3, type: 3}
       propertyPath: oreSpacing
