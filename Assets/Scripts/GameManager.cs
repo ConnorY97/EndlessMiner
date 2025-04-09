@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private TMP_Text oreCountUI = null;
-    private int oreCountInt = 0;
+    private float oreCountFloat = 0;
 
     [SerializeField]
     private Button spawnMiner = null;
@@ -60,13 +60,25 @@ public class GameManager : MonoBehaviour
     private Button spawnExpertMiner = null;
 
     [SerializeField]
-    private float minerCost = 500.0f;
+    private Button spawnStripMiner = null;
 
     [SerializeField]
-    private GameObject miner = null;
+    private int minerCost = 100;
 
     [SerializeField]
-    private GameObject expertMiner = null;
+    private float expertMinerMultiplier = 1.25f;
+
+    [SerializeField]
+    private float stripMinerMultiplier = 1.50f;
+
+    [SerializeField]
+    private GameObject minerPrefab = null;
+
+    [SerializeField]
+    private GameObject expertMinerPrefab = null;
+
+    [SerializeField]
+    private GameObject StripMinerPrefab = null;
 
     private List<Miner> miners = new List<Miner>();
     public List<Miner> Miners { get { return miners; } }
@@ -91,6 +103,11 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Please assign spawnExpertMiner Icon");
         }
 
+        if (spawnStripMiner == null)
+        {
+            Debug.LogError("Please assign spawnStripMiner Icon");
+        }
+
         Miner startingMiner = GameObject.FindWithTag("Miner").GetComponent<Miner>();
         if (startingMiner != null)
         {
@@ -102,47 +119,69 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        oreCountUI.text = oreCountFloat.ToString();
+    }
+
     public void IncrementOreCount(int incrementAmount)
     {
         if (oreCountUI != null && incrementAmount > 0)
         {
-            oreCountInt += incrementAmount;
-            oreCountUI.text = oreCountInt.ToString();
+            oreCountFloat += incrementAmount;
         }
 
-        if (oreCountInt > minerCost)
+        if (oreCountFloat >= minerCost)
         {
             spawnMiner.interactable = true;
         }
 
-        if (oreCountInt > (minerCost * 1.25f))
+        if (oreCountFloat >= (minerCost * 1.25f))
         {
             spawnExpertMiner.interactable = true;
         }
+
+        if (oreCountFloat >= (minerCost * 1.5f))
+        {
+            spawnStripMiner.interactable = true;
+        }
     }
 
-    public void BuyMiner(int amount)
+    public void BuyMiner()
     {
-        oreCountInt -= amount;
-        oreCountUI.text = oreCountInt.ToString();
+        oreCountFloat -= minerCost;
 
-        if (oreCountInt < minerCost)
+        if (oreCountFloat < minerCost)
         {
             spawnMiner.interactable = false;
         }
 
-        miners.Add(Instantiate(miner, transform).GetComponent<Miner>());
+        miners.Add(Instantiate(minerPrefab, transform).GetComponent<Miner>());
     }
 
-    public void BuyExpertMiner(int amount)
+    public void BuyExpertMiner()
     {
-        oreCountInt -= amount;
+        float expertMinerCost = minerCost * expertMinerMultiplier;
+        oreCountFloat -= expertMinerCost;
 
-        if (oreCountInt < (minerCost * 1.25f))
+        if (oreCountFloat < expertMinerCost)
         {
             spawnExpertMiner.interactable = false;
         }
 
-        miners.Add(Instantiate(expertMiner, transform).GetComponent<Miner>());
+        miners.Add(Instantiate(expertMinerPrefab, transform).GetComponent<Miner>());
+    }
+
+    public void BuyStripMiner()
+    {
+        float stripMinerCost = minerCost * stripMinerMultiplier;
+        oreCountFloat -= stripMinerCost;
+
+        if (oreCountFloat < stripMinerCost)
+        {
+            spawnStripMiner.interactable = false;
+        }
+
+        miners.Add(Instantiate(StripMinerPrefab, transform).GetComponent<Miner>());
     }
 }

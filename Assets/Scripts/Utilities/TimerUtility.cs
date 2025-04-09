@@ -85,7 +85,6 @@ public class Timer
 
     public void Start()
     {
-        Debug.Log("Timer started");
         if (!IsRunning)
         {
             IsRunning = true;

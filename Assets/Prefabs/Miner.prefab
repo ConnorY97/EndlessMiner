@@ -105,6 +105,10 @@ MonoBehaviour:
   miningRange: 0.25
   returnSpeed: 0.1
   mineSpeed: 0.25
+  capacity: 100
+  logging: 0
+  debugDraw: 0
+  debugRadius: 0.1
 --- !u!58 &577079934713968457
 CircleCollider2D:
   m_ObjectHideFlags: 0

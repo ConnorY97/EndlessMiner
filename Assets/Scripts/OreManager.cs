@@ -137,7 +137,7 @@ public class OreManager : MonoBehaviour
         {
             for (int j = 0; j < oreRows; j++)
             {
-                GameObject currentOre = Instantiate(orePrefab, gridPositions[i, j], Quaternion.identity);
+                GameObject currentOre = Instantiate(orePrefab, gridPositions[i, j], Quaternion.identity, transform);
                 currentOre.name = $"Ore {i}x{j}";
                 Ore oreRef = currentOre.GetComponent<Ore>();
                 oreRef.Init(currentFloor, oreSize, currentFloor);
