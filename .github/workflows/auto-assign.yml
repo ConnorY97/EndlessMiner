@@ -42,8 +42,8 @@ jobs:
               console.error(error);
             }
 
-      - name: Add issue to project
-        uses: actions/add-to-project@v1.0.2
+      - name: Assign to project
+        uses: srggrs/assign-one-project-github-action@1.2.1
+        if: github.event.action == 'opened'
         with:
-          project-url: https://github.com/users/ConnorY97/projects/2
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          project: 'https://github.com/users/ConnorY97/projects/2'
