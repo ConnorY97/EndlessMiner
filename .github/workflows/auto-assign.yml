@@ -9,6 +9,9 @@ on:
   issues:
     types: [opened]
 
+env:
+  github-token: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   assign:
     name: Assign milestone to new issue
