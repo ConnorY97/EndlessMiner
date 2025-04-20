@@ -19,6 +19,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             try {
+              const issueNumber = context.payload.issue.number;
               const owner = context.repo.owner;
 
               const milestoneNumber = 1;
