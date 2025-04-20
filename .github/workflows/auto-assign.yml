@@ -47,5 +47,4 @@ jobs:
         with:
           project-url: https://github.com/users/ConnorY97/projects/2
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          labeled: size/XS, priority/P0
-          label-operator: AND
+          labeled: size/XS
