@@ -11,9 +11,10 @@ on:
 
 jobs:
   assign:
+    name: Assign milestone to new issue
     runs-on: ubuntu-latest
     steps:
-      - name: Assign issue to project and milestone
+      - name: Assign issue to milestone
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -21,17 +22,22 @@ jobs:
             try {
               const issueNumber = context.payload.issue.number;
               const owner = context.repo.owner;
+              const repo = context.repo.repo;
 
               const milestoneNumber = 1;
 
+              console.log(`Assigning milestone ${milestoneNumber} to issue #${issueNumber}`);
+
               await github.rest.issues.update({
                 owner,
+                repo,
                 issue_number: issueNumber,
                 milestone: milestoneNumber
               });
+
+              console.log('Milestone assigned successfully.');
 
             } catch (error) {
               core.setFailed(error.message);
               console.error(error);
             }
-
