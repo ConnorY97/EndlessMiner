@@ -44,9 +44,3 @@ jobs:
               core.setFailed(error.message);
               console.error(error);
             }
-
-      - name: Add issue to project
-        uses: actions/add-to-project@v1.0.2
-        with:
-          project-url: https://github.com/users/ConnorY97/projects/3
-          github-token: ${{ secrets.GITHUB_TOKEN }}
