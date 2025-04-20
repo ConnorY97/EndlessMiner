@@ -19,24 +19,14 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             try {
-              const issueNumber = context.payload.issue.number;
               const owner = context.repo.owner;
-              const repo = context.repo.repo;
 
               const milestoneNumber = 1;
-              const projectColumnId = 123456; // this must be a COLUMN ID, not project ID
 
               await github.rest.issues.update({
                 owner,
-                repo,
                 issue_number: issueNumber,
                 milestone: milestoneNumber
-              });
-
-              await github.rest.projects.createCard({
-                column_id: projectColumnId,
-                content_id: context.payload.issue.id,
-                content_type: 'Issue'
               });
 
             } catch (error) {
