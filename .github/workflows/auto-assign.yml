@@ -1,5 +1,10 @@
 name: Auto Assign requirements
 
+permissions:
+  issues: write
+  contents: read
+  pull-requests: write
+
 on:
   issues:
     types: [opened]
@@ -13,25 +18,29 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const issueNumber = context.payload.issue.number;
-            const owner = context.repo.owner;
-            const repo = context.repo.repo;
+            try {
+              const issueNumber = context.payload.issue.number;
+              const owner = context.repo.owner;
+              const repo = context.repo.repo;
 
-            // 🎯 Set your milestone number and project ID here
-            const milestoneNumber = 1; // Replace with your milestone number
-            const projectId = 2;  // Replace with your project ID
+              const milestoneNumber = 1;
+              const projectColumnId = 123456; // this must be a COLUMN ID, not project ID
 
-            // Add milestone to the issue
-            await github.rest.issues.update({
-              owner,
-              repo,
-              issue_number: issueNumber,
-              milestone: milestoneNumber
-            });
+              await github.rest.issues.update({
+                owner,
+                repo,
+                issue_number: issueNumber,
+                milestone: milestoneNumber
+              });
 
-            // Add the issue to the project
-            await github.rest.projects.createCard({
-              column_id: projectId,
-              content_id: context.payload.issue.id,
-              content_type: 'Issue'
-            });
+              await github.rest.projects.createCard({
+                column_id: projectColumnId,
+                content_id: context.payload.issue.id,
+                content_type: 'Issue'
+              });
+
+            } catch (error) {
+              core.setFailed(error.message);
+              console.error(error);
+            }
+
