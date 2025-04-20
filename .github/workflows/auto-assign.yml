@@ -1,19 +1,37 @@
-name: Auto Assign
+name: Auto Assign requirements
+
 on:
   issues:
     types: [opened]
-  pull_request:
-    types: [opened]
+
 jobs:
-  run:
+  assign:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
-      pull-requests: write
     steps:
-    - name: 'Auto-assign issue'
-      uses: pozil/auto-assign-issue@v1
-      with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          assignees: AlexMollard
-          numOfAssignee: 1
+      - name: Assign issue to project and milestone
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issueNumber = context.payload.issue.number;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            // 🎯 Set your milestone number and project ID here
+            const milestoneNumber = 1; // Replace with your milestone number
+            const projectId = 2;  // Replace with your project ID
+
+            // Add milestone to the issue
+            await github.rest.issues.update({
+              owner,
+              repo,
+              issue_number: issueNumber,
+              milestone: milestoneNumber
+            });
+
+            // Add the issue to the project
+            await github.rest.projects.createCard({
+              column_id: projectId,
+              content_id: context.payload.issue.id,
+              content_type: 'Issue'
+            });
