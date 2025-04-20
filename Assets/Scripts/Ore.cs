@@ -4,30 +4,30 @@ using UnityEngine;
 public class Ore : MonoBehaviour
 {
     [SerializeField]
-    private float health = 100;
+    protected float health = 100;
     public float Health { get { return health; } }
 
-    private float maxHealth = 100;
+    protected float maxHealth = 100;
 
     [SerializeField]
-    private GameObject minePos = null;
+    protected GameObject minePos = null;
     public GameObject MinePos { get { return minePos; } }
 
-    private bool targeted = false;
+    protected bool targeted = false;
     public bool Targeted { get { return targeted; } set { targeted = value; } }
 
-    private float value = 10.0f;
+    protected float value = 10.0f;
     public float Value { get { return value; } }
 
-    private Ore[] neighbours = null;
-    public Ore[] Neighbors { get { return neighbours; } set { neighbours = value; } }
+    protected Ore[] neighbors = null;
+    public Ore[] Neighbors { get { return neighbors; } set { neighbors = value; } }
 
-    private SpriteRenderer spriteRenderer = null;
+    protected SpriteRenderer spriteRenderer = null;
 
     [SerializeField]
-    private SpriteRenderer barRenderer = null;
+    protected SpriteRenderer barRenderer = null;
 
-    public void Init(float healthMultiplier, float oreScaling, float valueMultiplier)
+    public virtual void Init(float healthMultiplier, float oreScaling, float valueMultiplier)
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer == null)
@@ -57,14 +57,14 @@ public class Ore : MonoBehaviour
         }
     }
 
-    public bool Mined(float damage)
+    public virtual bool Mined(float damage)
     {
         health -= damage;
 
         SetHealth(health);
         if (health < 0)
         {
-            NotifyNeighbours(this);
+            NotifyNeighbors(this);
             return true;
         }
         else
@@ -73,9 +73,9 @@ public class Ore : MonoBehaviour
         }
     }
 
-    private void NotifyNeighbours(Ore thisOre)
+    protected virtual void NotifyNeighbors(Ore thisOre)
     {
-        foreach (var currNeighbour in neighbours)
+        foreach (var currNeighbour in neighbors)
         {
             if (currNeighbour != null)
             {
@@ -103,7 +103,7 @@ public class Ore : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private Sprite CreateRoundedBarTexture()
+    protected virtual Sprite CreateRoundedBarTexture()
     {
         Texture2D texture = new Texture2D(32, 8);
         for (int x = 0; x < texture.width; x++)
